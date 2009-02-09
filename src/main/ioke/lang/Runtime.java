@@ -619,12 +619,12 @@ public class Runtime {
         }
     }
 
-    public IokeObject createJavaMethod(java.lang.reflect.Method method) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(method));
+    public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
     }
 
-    public IokeObject createJavaMethod(java.lang.reflect.Constructor ctor) throws ControlFlow {
-        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctor));
+    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors));
     }
 
     public IokeObject newNumber(String number) throws ControlFlow {
