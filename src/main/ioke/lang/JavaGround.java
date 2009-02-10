@@ -38,10 +38,31 @@ public class JavaGround {
                     try {
                         c = Class.forName(name);
                     } catch(Exception e) {
-                        System.err.println("Ouchie...: " + e);
-                        c = null;
+                        runtime.reportJavaException(e, message, context);
                     }
-                    return c;
+                    return runtime.registry.wrap(c);
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java String, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: String->Text") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof String) {
+                        return runtime.newText((String)on);
+                    } else {
+                        return runtime.newText((String)JavaWrapper.getObject(on));
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("expects to be invoked on a Java Integer, either wrapped or unwrapped.", new JavaMethod.WithNoArguments("primitiveMagic: Integer->Rational") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof Integer) {
+                        return runtime.newNumber(((Integer)on).longValue());
+                    } else {
+                        return runtime.newNumber(((Integer)JavaWrapper.getObject(on)).longValue());
+                    }
                 }
             }));
         

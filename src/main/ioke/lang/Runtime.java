@@ -3,30 +3,29 @@
  */
 package ioke.lang;
 
+import gnu.math.IntFraction;
+import gnu.math.IntNum;
+import gnu.math.RatNum;
+
+import ioke.lang.exceptions.ControlFlow;
+import ioke.lang.parser.iokeLexer;
+import ioke.lang.parser.iokeParser;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.Reader;
-import java.io.InputStreamReader;
-import java.io.FileInputStream;
-import java.io.File;
 import java.io.StringReader;
 
 import java.math.BigDecimal;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Collection;
-
-import ioke.lang.parser.iokeLexer;
-import ioke.lang.parser.iokeParser;
-
-import ioke.lang.exceptions.ControlFlow;
-
-import gnu.math.RatNum;
-import gnu.math.IntNum;
-import gnu.math.IntFraction;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -38,6 +37,8 @@ public class Runtime {
     PrintWriter out;
     PrintWriter err;
     Reader in;
+    
+    public IokeRegistry registry = new IokeRegistry(this);
 
     // Core objects and origins
     public IokeObject base = new IokeObject(this, "Base is the top of the inheritance structure. Most of the objects in the system are derived from this instance. Base should keep its cells to the bare minimum needed for the system.");
@@ -72,6 +73,7 @@ public class Runtime {
     public IokeObject dateTime = new IokeObject(this, "A DateTime represents the current date and time in a particular time zone.", new DateTime(0));
 
     public IokeObject locals = new IokeObject(this, "Contains all the locals for a specific invocation.");
+    public IokeObject javaWrapper = new IokeObject(this, "Wraps a java object.", new JavaWrapper());
 
     public IokeObject condition = new IokeObject(this, "The root mimic of all the conditions in the system.");
     public IokeObject rescue = new IokeObject(this, "A Rescue contains handling information from rescuing a Condition.");
@@ -211,6 +213,7 @@ public class Runtime {
         FileSystem.init(fileSystem);
         regexp.init();
         JavaGround.init(javaGround);
+        javaWrapper.init();
 
         ground.mimicsWithoutCheck(defaultBehavior);
         ground.mimicsWithoutCheck(base);
@@ -271,6 +274,8 @@ public class Runtime {
 
         Restart.init(restart);
         restart.mimicsWithoutCheck(origin);
+
+        javaWrapper.mimicsWithoutCheck(origin);
 
         addBuiltinScript("benchmark", new Builtin() {
                 public IokeObject load(Runtime runtime, IokeObject context, IokeObject message) throws ControlFlow {
@@ -572,6 +577,54 @@ public class Runtime {
         obj.mimicsWithoutCheck(this.decimal);
         obj.setData(Decimal.decimal(number));
         return obj;
+    }
+
+    public IokeObject createJavaWrapper(Object object) {
+        //        System.err.println("creating Java wrapper: " + object);
+        // if object instance of Class
+        //    if it is the class Object, don't recurse, instead mimic the java wrapper
+        //    wrap its super classes first, and add those as mimics
+        // else
+        //    wrap its class, add that as mimic, and 
+        //    then wrap the object itself
+        //
+        if(object instanceof Class) {
+            if(object == Object.class) {
+                IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+                obj.mimicsWithoutCheck(this.javaWrapper);
+                obj.setData(JavaWrapper.wrapWithMethods((Class)object, obj, this));
+                return obj;
+            } else if(object == Class.class) {
+                IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+                Class<?> clz = (Class)object;
+                obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
+                obj.setData(JavaWrapper.wrapWithMethods(clz, obj, this));
+                return obj;
+            } else {
+                IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+                Class<?> clz = (Class)object;
+                obj.mimicsWithoutCheck(registry.wrap(Class.class));
+                obj.mimicsWithoutCheck(registry.wrap(clz.getSuperclass()));
+                for(Class<?> i : clz.getInterfaces()) {
+                    obj.mimicsWithoutCheck(registry.wrap(i));
+                }
+                obj.setData(JavaWrapper.wrapWithMethods(clz, obj, this));
+                return obj;
+            }
+        } else {
+            IokeObject obj = this.javaWrapper.allocateCopy(null, null);
+            obj.mimicsWithoutCheck(registry.wrap(object.getClass()));
+            obj.setData(new JavaWrapper(object));
+            return obj;
+        }
+    }
+
+    public IokeObject createJavaMethod(java.lang.reflect.Method[] methods) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaMethodJavaMethod(methods));
+    }
+
+    public IokeObject createJavaMethod(java.lang.reflect.Constructor[] ctors) throws ControlFlow {
+        return newMethod(null, this.javaMethod, new JavaConstructorJavaMethod(ctors));
     }
 
     public IokeObject newNumber(String number) throws ControlFlow {
