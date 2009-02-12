@@ -24,12 +24,16 @@ describe("JavaGround",
     it("should return the Java class for the string sent in",
       px = JavaGround primitiveJavaClass!("java.util.HashMap")
       px kind should == "java:lang:Class"
-      px name should == "java:util:HashMap"
+      px class:name should == "java:util:HashMap"
       px cell?(:new) should be true
     )
   )
 
   describe("import",
+    it("should have tests NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW NOW")
+  )
+
+  describe("use of jar-files",
     it("should have tests")
   )
 )
@@ -47,8 +51,1298 @@ describe("Java Objects",
     it("should have tests")
   )
 
+  describe("static fields",
+    describe("public",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:StaticFields
+          i field:publicStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicStringField=") should be true
+          i cell?("field:publicStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicObjectField=") should be true
+          i cell?("field:publicObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:StaticFields
+          i field:publicIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicIntField=") should be true
+          i cell?("field:publicIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:StaticFields
+          i field:publicShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicShortField=") should be true
+          i cell?("field:publicShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:StaticFields
+          i field:publicLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicLongField=") should be true
+          i cell?("field:publicLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:StaticFields
+          i field:publicCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicCharField=") should be true
+          i cell?("field:publicCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:StaticFields
+          i field:publicFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicFloatField=") should be true
+          i cell?("field:publicFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:StaticFields
+          i field:publicDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicDoubleField=") should be true
+          i cell?("field:publicDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:StaticFields
+          i field:publicBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:publicBooleanField=") should be true
+          i cell?("field:publicBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:StaticFields
+        i field:publicStringField should be nil
+        i field:publicStringField = "blargus"
+        i get_publicStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:StaticFields
+        i field:publicObjectField should be nil
+        i field:publicObjectField = (1..5)
+        i get_publicObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:StaticFields
+        i field:publicIntField asRational should == 0
+        i field:publicIntField = 42
+        i get_publicIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:StaticFields
+        i field:publicShortField asRational should == 0
+        i field:publicShortField = 12
+        i get_publicShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:StaticFields
+        i field:publicLongField asRational should == 0
+        i field:publicLongField = 127
+        i get_publicLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:StaticFields
+        i field:publicCharField asRational should == 0
+        i field:publicCharField = 10
+        i get_publicCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:StaticFields
+        i field:publicFloatField asDecimal should == 0.0
+        i field:publicFloatField = 10.3
+        i get_publicFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:StaticFields
+        i field:publicDoubleField asDecimal should == 0.0
+        i field:publicDoubleField = 5335.234
+        i get_publicDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:StaticFields
+        i field:publicBooleanField should be false
+        i field:publicBooleanField = true
+        i get_publicBooleanField should be true
+      )
+    )
+
+    describe("protected",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedStringField=") should be true
+          i cell?("field:protectedStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedObjectField=") should be true
+          i cell?("field:protectedObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedIntField=") should be true
+          i cell?("field:protectedIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedShortField=") should be true
+          i cell?("field:protectedShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedLongField=") should be true
+          i cell?("field:protectedLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedCharField=") should be true
+          i cell?("field:protectedCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedFloatField=") should be true
+          i cell?("field:protectedFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedDoubleField=") should be true
+          i cell?("field:protectedDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:StaticFields
+          i field:protectedBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:protectedBooleanField=") should be true
+          i cell?("field:protectedBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedStringField should be nil
+        i field:protectedStringField = "blargus"
+        i get_protectedStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedObjectField should be nil
+        i field:protectedObjectField = (1..5)
+        i get_protectedObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedIntField asRational should == 0
+        i field:protectedIntField = 42
+        i get_protectedIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedShortField asRational should == 0
+        i field:protectedShortField = 12
+        i get_protectedShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedLongField asRational should == 0
+        i field:protectedLongField = 127
+        i get_protectedLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedCharField asRational should == 0
+        i field:protectedCharField = 10
+        i get_protectedCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedFloatField asDecimal should == 0.0
+        i field:protectedFloatField = 10.3
+        i get_protectedFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedDoubleField asDecimal should == 0.0
+        i field:protectedDoubleField = 5335.234
+        i get_protectedDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:StaticFields
+        i field:protectedBooleanField should be false
+        i field:protectedBooleanField = true
+        i get_protectedBooleanField should be true
+      )
+    )
+
+    describe("packagePrivate",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateStringField=") should be true
+          i cell?("field:packagePrivateStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateObjectField=") should be true
+          i cell?("field:packagePrivateObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateIntField=") should be true
+          i cell?("field:packagePrivateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateShortField=") should be true
+          i cell?("field:packagePrivateShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateLongField=") should be true
+          i cell?("field:packagePrivateLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateCharField=") should be true
+          i cell?("field:packagePrivateCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateFloatField=") should be true
+          i cell?("field:packagePrivateFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateDoubleField=") should be true
+          i cell?("field:packagePrivateDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:StaticFields
+          i field:packagePrivateBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:packagePrivateBooleanField=") should be true
+          i cell?("field:packagePrivateBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateStringField should be nil
+        i field:packagePrivateStringField = "blargus"
+        i get_packagePrivateStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateObjectField should be nil
+        i field:packagePrivateObjectField = (1..5)
+        i get_packagePrivateObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateIntField asRational should == 0
+        i field:packagePrivateIntField = 42
+        i get_packagePrivateIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateShortField asRational should == 0
+        i field:packagePrivateShortField = 12
+        i get_packagePrivateShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateLongField asRational should == 0
+        i field:packagePrivateLongField = 127
+        i get_packagePrivateLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateCharField asRational should == 0
+        i field:packagePrivateCharField = 10
+        i get_packagePrivateCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateFloatField asDecimal should == 0.0
+        i field:packagePrivateFloatField = 10.3
+        i get_packagePrivateFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateDoubleField asDecimal should == 0.0
+        i field:packagePrivateDoubleField = 5335.234
+        i get_packagePrivateDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:StaticFields
+        i field:packagePrivateBooleanField should be false
+        i field:packagePrivateBooleanField = true
+        i get_packagePrivateBooleanField should be true
+      )
+    )
+
+
+    describe("private",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:StaticFields
+          i field:privateStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateStringField=") should be true
+          i cell?("field:privateStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateObjectField=") should be true
+          i cell?("field:privateObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:StaticFields
+          i field:privateIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateIntField=") should be true
+          i cell?("field:privateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:StaticFields
+          i field:privateShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateShortField=") should be true
+          i cell?("field:privateShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:StaticFields
+          i field:privateLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateLongField=") should be true
+          i cell?("field:privateLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:StaticFields
+          i field:privateCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateCharField=") should be true
+          i cell?("field:privateCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:StaticFields
+          i field:privateFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateFloatField=") should be true
+          i cell?("field:privateFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:StaticFields
+          i field:privateDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateDoubleField=") should be true
+          i cell?("field:privateDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:StaticFields
+          i field:privateBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:StaticFields
+          i cell?("field:privateBooleanField=") should be true
+          i cell?("field:privateBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:StaticFields
+        i field:privateStringField should be nil
+        i field:privateStringField = "blargus"
+        i get_privateStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:StaticFields
+        i field:privateObjectField should be nil
+        i field:privateObjectField = (1..5)
+        i get_privateObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:StaticFields
+        i field:privateIntField asRational should == 0
+        i field:privateIntField = 42
+        i get_privateIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:StaticFields
+        i field:privateShortField asRational should == 0
+        i field:privateShortField = 12
+        i get_privateShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:StaticFields
+        i field:privateLongField asRational should == 0
+        i field:privateLongField = 127
+        i get_privateLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:StaticFields
+        i field:privateCharField asRational should == 0
+        i field:privateCharField = 10
+        i get_privateCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:StaticFields
+        i field:privateFloatField asDecimal should == 0.0
+        i field:privateFloatField = 10.3
+        i get_privateFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:StaticFields
+        i field:privateDoubleField asDecimal should == 0.0
+        i field:privateDoubleField = 5335.234
+        i get_privateDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:StaticFields
+        i field:privateBooleanField should be false
+        i field:privateBooleanField = true
+        i get_privateBooleanField should be true
+      )
+    )
+  )
+
   describe("fields",
-    it("should have tests")
+    describe("public",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicStringField=") should be true
+          i cell?("field:publicStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicObjectField=") should be true
+          i cell?("field:publicObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicIntField=") should be true
+          i cell?("field:publicIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicShortField=") should be true
+          i cell?("field:publicShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicLongField=") should be true
+          i cell?("field:publicLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicCharField=") should be true
+          i cell?("field:publicCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicFloatField=") should be true
+          i cell?("field:publicFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicDoubleField=") should be true
+          i cell?("field:publicDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i field:publicBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:publicBooleanField=") should be true
+          i cell?("field:publicBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicStringField should be nil
+        i field:publicStringField = "blargus"
+        i get_publicStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicObjectField should be nil
+        i field:publicObjectField = (1..5)
+        i get_publicObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicIntField asRational should == 0
+        i field:publicIntField = 42
+        i get_publicIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicShortField asRational should == 0
+        i field:publicShortField = 12
+        i get_publicShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicLongField asRational should == 0
+        i field:publicLongField = 127
+        i get_publicLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicCharField asRational should == 0
+        i field:publicCharField = 10
+        i get_publicCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicFloatField asDecimal should == 0.0
+        i field:publicFloatField = 10.3
+        i get_publicFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicDoubleField asDecimal should == 0.0
+        i field:publicDoubleField = 5335.234
+        i get_publicDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:InstanceFields new
+        i field:publicBooleanField should be false
+        i field:publicBooleanField = true
+        i get_publicBooleanField should be true
+      )
+    )
+
+    describe("protected",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedStringField=") should be true
+          i cell?("field:protectedStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedObjectField=") should be true
+          i cell?("field:protectedObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedIntField=") should be true
+          i cell?("field:protectedIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedShortField=") should be true
+          i cell?("field:protectedShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedLongField=") should be true
+          i cell?("field:protectedLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedCharField=") should be true
+          i cell?("field:protectedCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedFloatField=") should be true
+          i cell?("field:protectedFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedDoubleField=") should be true
+          i cell?("field:protectedDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i field:protectedBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:protectedBooleanField=") should be true
+          i cell?("field:protectedBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedStringField should be nil
+        i field:protectedStringField = "blargus"
+        i get_protectedStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedObjectField should be nil
+        i field:protectedObjectField = (1..5)
+        i get_protectedObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedIntField asRational should == 0
+        i field:protectedIntField = 42
+        i get_protectedIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedShortField asRational should == 0
+        i field:protectedShortField = 12
+        i get_protectedShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedLongField asRational should == 0
+        i field:protectedLongField = 127
+        i get_protectedLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedCharField asRational should == 0
+        i field:protectedCharField = 10
+        i get_protectedCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedFloatField asDecimal should == 0.0
+        i field:protectedFloatField = 10.3
+        i get_protectedFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedDoubleField asDecimal should == 0.0
+        i field:protectedDoubleField = 5335.234
+        i get_protectedDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:InstanceFields new
+        i field:protectedBooleanField should be false
+        i field:protectedBooleanField = true
+        i get_protectedBooleanField should be true
+      )
+    )
+
+    describe("packagePrivate",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateStringField=") should be true
+          i cell?("field:packagePrivateStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateObjectField=") should be true
+          i cell?("field:packagePrivateObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateIntField=") should be true
+          i cell?("field:packagePrivateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateShortField=") should be true
+          i cell?("field:packagePrivateShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateLongField=") should be true
+          i cell?("field:packagePrivateLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateCharField=") should be true
+          i cell?("field:packagePrivateCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateFloatField=") should be true
+          i cell?("field:packagePrivateFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateDoubleField=") should be true
+          i cell?("field:packagePrivateDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i field:packagePrivateBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:packagePrivateBooleanField=") should be true
+          i cell?("field:packagePrivateBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateStringField should be nil
+        i field:packagePrivateStringField = "blargus"
+        i get_packagePrivateStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateObjectField should be nil
+        i field:packagePrivateObjectField = (1..5)
+        i get_packagePrivateObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateIntField asRational should == 0
+        i field:packagePrivateIntField = 42
+        i get_packagePrivateIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateShortField asRational should == 0
+        i field:packagePrivateShortField = 12
+        i get_packagePrivateShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateLongField asRational should == 0
+        i field:packagePrivateLongField = 127
+        i get_packagePrivateLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateCharField asRational should == 0
+        i field:packagePrivateCharField = 10
+        i get_packagePrivateCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateFloatField asDecimal should == 0.0
+        i field:packagePrivateFloatField = 10.3
+        i get_packagePrivateFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateDoubleField asDecimal should == 0.0
+        i field:packagePrivateDoubleField = 5335.234
+        i get_packagePrivateDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:InstanceFields new
+        i field:packagePrivateBooleanField should be false
+        i field:packagePrivateBooleanField = true
+        i get_packagePrivateBooleanField should be true
+      )
+    )
+
+
+    describe("private",
+      describe("final",
+        it("should handle a simple String field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateStringFieldFinal asText should == "test1StringFinal"
+        )
+
+        it("should not have a setter for the String field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateStringField=") should be true
+          i cell?("field:privateStringFieldFinal=") should be false
+        )
+
+        it("should not have a setter for the Object field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateObjectField=") should be true
+          i cell?("field:privateObjectFieldFinal=") should be false
+        )
+
+        it("should handle a simple int field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateIntFieldFinal asRational should == 42
+        )
+
+        it("should not have a setter for the int field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateIntField=") should be true
+          i cell?("field:privateIntFieldFinal=") should be false
+        )
+
+        it("should handle a simple short field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateShortFieldFinal asRational should == 13
+        )
+
+        it("should not have a setter for the short field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateShortField=") should be true
+          i cell?("field:privateShortFieldFinal=") should be false
+        )
+
+        it("should handle a simple long field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateLongFieldFinal asRational should == 13243435
+        )
+
+        it("should not have a setter for the long field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateLongField=") should be true
+          i cell?("field:privateLongFieldFinal=") should be false
+        )
+
+        it("should handle a simple char field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateCharFieldFinal asRational should == 44
+        )
+
+        it("should not have a setter for the char field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateCharField=") should be true
+          i cell?("field:privateCharFieldFinal=") should be false
+        )
+
+        it("should handle a simple float field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateFloatFieldFinal asDecimal should be close(434.2)
+        )
+
+        it("should not have a setter for the float field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateFloatField=") should be true
+          i cell?("field:privateFloatFieldFinal=") should be false
+        )
+
+        it("should handle a simple double field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateDoubleFieldFinal asDecimal should be close(3432435.22)
+        )
+
+        it("should not have a setter for the double field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateDoubleField=") should be true
+          i cell?("field:privateDoubleFieldFinal=") should be false
+        )
+
+        it("should handle a simple boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i field:privateBooleanFieldFinal should be true
+        )
+
+        it("should not have a setter for the boolean field",
+          i = ioke:lang:test:InstanceFields new
+          i cell?("field:privateBooleanField=") should be true
+          i cell?("field:privateBooleanFieldFinal=") should be false
+        )
+      )
+
+      it("should handle a simple String field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateStringField should be nil
+        i field:privateStringField = "blargus"
+        i get_privateStringField asText should == "blargus"
+      )
+
+      it("should handle a simple Object field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateObjectField should be nil
+        i field:privateObjectField = (1..5)
+        i get_privateObjectField should == (1..5)
+      )
+
+      it("should handle a simple int field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateIntField asRational should == 0
+        i field:privateIntField = 42
+        i get_privateIntField asRational should == 42
+      )
+
+      it("should handle a simple short field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateShortField asRational should == 0
+        i field:privateShortField = 12
+        i get_privateShortField asRational should == 12
+      )
+
+      it("should handle a simple long field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateLongField asRational should == 0
+        i field:privateLongField = 127
+        i get_privateLongField asRational should == 127
+      )
+
+      it("should handle a simple char field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateCharField asRational should == 0
+        i field:privateCharField = 10
+        i get_privateCharField asRational should == 10
+      )
+
+      it("should handle a simple float field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateFloatField asDecimal should == 0.0
+        i field:privateFloatField = 10.3
+        i get_privateFloatField asDecimal should be close(10.3)
+      )
+
+      it("should handle a simple double field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateDoubleField asDecimal should == 0.0
+        i field:privateDoubleField = 5335.234
+        i get_privateDoubleField asDecimal should be close(5335.234)
+      )
+
+      it("should handle a simple boolean field",
+        i = ioke:lang:test:InstanceFields new
+        i field:privateBooleanField should be false
+        i field:privateBooleanField = true
+        i get_privateBooleanField should be true
+      )
+    )
   )
 
   describe("construction",
@@ -181,7 +1475,29 @@ describe("Java Objects",
     )
 
     it("should be possible to supply arguments by name")
-    it("should add aliases for JavaBean style methods")
+
+    it("should add an alias for a name beginning in get, taking no arguments",
+      val = ioke:lang:test:StaticJavaBean
+      val getFooValue asText should == "foo"
+      val fooValue asText should == "foo"
+    )
+
+    it("should add an alias for a name beginning with set, taking one argument",
+      val = ioke:lang:test:StaticJavaBean
+      val setQuuxValue("blax")
+      val getQuuxValue asText should == "blax"
+      val quuxValue = "blux"
+      val getQuuxValue asText should == "blux"
+    )
+
+    it("should add an alias for a name beginning with is, taking no arguments",
+      val = ioke:lang:test:StaticJavaBean
+      val isBarValue() should be true
+      val barValue? should be true
+      val setBarValue(false)
+      val isBarValue() should be false
+      val barValue? should be false
+    )
   )
 
   describe("methods",
@@ -332,9 +1648,46 @@ describe("Java Objects",
       i overloaded((java:lang:Object)nil) asText should == "overloaded(null: Object)"
     )
 
-    it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods")
+    it("should disambiguate between methods that take a Class and methods that take instance of that class, when searching for appropriate methods",
+      i = java:util:ArrayList new
+      i add("foo")
+      i add("bar")
+      
+      ;; this test might look weird. the reason is that ArrayList doesn't implement its own toString.
+      ;; that implementation is in a super class. the problem is that the Class#toString method will be found
+      ;; first, so this will cause an invocation problem currently. that shouldn't happen.
+      ;; instead, a Java lookup like this should actually totally ignore methods implemented for classes when
+      ;; the instance in question is not a class. ok, that explanation sucks. someone redo it good?
+      i toString asText should == "[foo, bar]"
+
+      java:util:ArrayList class:toString asText should == "class java.util.ArrayList"
+      java:util:ArrayList new class:toString asText should == "class java.util.ArrayList"
+    )
+
     it("should be possible to supply arguments by name")
-    it("should add aliases for JavaBean style methods")
+
+    it("should add an alias for a name beginning in get, taking no arguments",
+      val = ioke:lang:test:JavaBean new("foo", false)
+      val getFooValue asText should == "foo"
+      val fooValue asText should == "foo"
+    )
+
+    it("should add an alias for a name beginning with set, taking one argument",
+      val = ioke:lang:test:JavaBean new("foo", false)
+      val setFooValue("blax")
+      val getFooValue asText should == "blax"
+      val fooValue = "blux"
+      val getFooValue asText should == "blux"
+    )
+
+    it("should add an alias for a name beginning with is, taking no arguments",
+      val = ioke:lang:test:JavaBean new("foo", true)
+      val isBarValue() should be true
+      val barValue? should be true
+      val setBarValue(false)
+      val isBarValue() should be false
+      val barValue? should be false
+    )
   )
 
   describe("constructors",
@@ -437,6 +1790,10 @@ describe("Java Objects",
   )
 
   describe("extending classes",
+    it("should have tests")
+  )
+
+  describe("working with arrays",
     it("should have tests")
   )
 )

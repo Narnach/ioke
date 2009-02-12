@@ -3,7 +3,7 @@
  */
 package ioke.lang;
 
-import java.lang.reflect.Method;
+import java.lang.reflect.Field;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,16 +17,14 @@ import ioke.lang.exceptions.ControlFlow;
  *
  * @author <a href="mailto:ola.bini@gmail.com">Ola Bini</a>
  */
-public class JavaMethodJavaMethod extends ioke.lang.Method {
+public class JavaFieldGetterJavaMethod extends Method {
     private Class declaringClass;
-    private Method[] methods;
-    private JavaArgumentsDefinition arguments;
+    private Field field;
 
-    public JavaMethodJavaMethod(Method[] methods) {
-        super(methods[0].getName());
-        this.methods = methods;
-        this.declaringClass = methods[0].getDeclaringClass();
-        this.arguments = JavaArgumentsDefinition.createFrom(methods);
+    public JavaFieldGetterJavaMethod(Field field) {
+        super(field.getName());
+        this.field = field;
+        this.declaringClass = field.getDeclaringClass();
     }
 
     public String getArgumentsCode() {
@@ -35,21 +33,14 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
 
     @Override
     public Object activate(IokeObject self, IokeObject context, IokeObject message, Object on) throws ControlFlow {
-        List<Object> args = new LinkedList<Object>();
-        Method method = (Method)arguments.getJavaArguments(context, message, on, args);
-        return activate(self, on, args, method, context, message);
-    }
-
-    public Object activate(IokeObject self, Object on, List<Object> args, Method method, IokeObject context, IokeObject message) throws ControlFlow {
         try {
             if((on instanceof IokeObject) && (IokeObject.data(on) instanceof JavaWrapper)) {
-//                  System.err.println("Invoking " + method.getName() + " on " + ((JavaWrapper)IokeObject.data(on)).getObject() + "[" + ((JavaWrapper)IokeObject.data(on)).getObject().getClass().getName() + "]");
                 Object obj = ((JavaWrapper)IokeObject.data(on)).getObject();
                 if(!(declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
                 }
 
-                Object result = method.invoke(obj, args.toArray());
+                Object result = field.get(obj);
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {
@@ -57,12 +48,12 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
                 }
                 return result;
             } else {
-//                  System.err.println("Invoking " + method.getName() + " on " + on + "[" + on.getClass().getName() + "]");
                 Object obj = on;
                 if(!(declaringClass.isInstance(obj))) {
                     obj = obj.getClass();
                 }
-                Object result = method.invoke(obj, args.toArray());
+
+                Object result = field.get(obj);
                 if(result == null) {
                     return context.runtime.nil;
                 } else if(result instanceof Boolean) {
@@ -78,6 +69,6 @@ public class JavaMethodJavaMethod extends ioke.lang.Method {
     
     @Override
     public String inspect(Object self) {
-        return "method(" + methods[0].getDeclaringClass().getName() + "_" + methods[0].getName() + ")";
+        return "method(" + declaringClass.getName() + "_" + field.getName() + ")";
     }
-}
+}// JavaFieldGetterJavaMethod

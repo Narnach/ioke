@@ -5,6 +5,11 @@ ISpec do(
 
   NotShouldContext = ShouldContext __mimic__
 
+  ShouldContext inspect = "ISpec ShouldContext"
+  ShouldContext notice  = "ISpec ShouldContext"
+  NotShouldContext inspect = "ISpec NotShouldContext"
+  NotShouldContext notice  = "ISpec NotShouldContext"
+
   ShouldContext create = method(value, shouldMessage,
     newSelf = self __mimic__
     newSelf realValue = cell(:value)
@@ -21,12 +26,15 @@ ISpec do(
     unless(msg sendTo(self cell(:realValue), call ground),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue} #{msg code} to be true", shouldMessage: self shouldMessage)))
 
-
   ShouldContext == = method(value,
     unless(realValue == value,
       if(realValue kind == "List" && value kind == "List",
         error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}. difference: #{(realValue - value) inspect}. #{realValue length} vs #{value length}", shouldMessage: self shouldMessage),
         error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to == #{value inspect}", shouldMessage: self shouldMessage))))
+
+  ShouldContext close = method(value, epsilon 0.0001,
+    unless(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be close to #{value inspect}", shouldMessage: self shouldMessage)))
 
   ShouldContext === = method(value,
     unless(realValue === value,
@@ -74,9 +82,11 @@ ISpec do(
     unless(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to mimic #{value kind}", shouldMessage: self shouldMessage)))
 
-  ShouldContext kind = method(value,
-    unless(realValue kind?(value),
-      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be kind #{value kind}", shouldMessage: self shouldMessage)))
+  ShouldContext kind = method(value nil,
+    if(value nil?,
+      "ISpec ShouldContext",
+      unless(realValue kind?(value),
+        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to be kind #{value kind}", shouldMessage: self shouldMessage))))
 
   ShouldContext true = method(
     unless(Ground true == realValue,
@@ -112,6 +122,10 @@ ISpec do(
     if(realValue == value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not == #{value inspect}", shouldMessage: self shouldMessage)))
 
+  NotShouldContext close = method(value, epsilon 0.0001,
+    if(((realValue - value) < epsilon) && ((realValue - value) > -epsilon),
+      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not be close to #{value inspect}", shouldMessage: self shouldMessage)))
+
   NotShouldContext === = method(value,
     if(realValue === value,
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not === #{value inspect}", shouldMessage: self shouldMessage)))
@@ -134,9 +148,11 @@ ISpec do(
     if(realValue mimics?(value),
       error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not mimic #{value kind}", shouldMessage: self shouldMessage)))
 
-  NotShouldContext kind = method(value,
-    if(realValue kind?(value),
-      error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not have kind #{value kind}", shouldMessage: self shouldMessage)))
+  NotShouldContext kind = method(value nil,
+    if(value nil?,
+      "ISpec NotShouldContext",
+      if(realValue kind?(value),
+        error!(ISpec ExpectationNotMet, text: "expected #{realValue inspect} to not have kind #{value kind}", shouldMessage: self shouldMessage))))
 
   NotShouldContext true = method(
     if(Ground true == realValue,
