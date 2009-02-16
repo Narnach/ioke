@@ -16,69 +16,6 @@
 	<array>
 		<dict>
 			<key>begin</key>
-			<string>((?&lt;=fn\()|(?&lt;=fnx\()|(?&lt;=method\()|(?&lt;=macro\()|(?&lt;=lecro\()|(?&lt;=syntax\()|(?&lt;=dmacro\()|(?&lt;=dlecro\()|(?&lt;=dlecrox\()|(?&lt;=dsyntax\())[[:space]]*"</string>
-			<key>end</key>
-			<string>"</string>
-			<key>name</key>
-			<string>string.documentation.ioke</string>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
-				</dict>
-				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
-				</dict>
-			</array>
-		</dict>
-		<dict>
-			<key>begin</key>
 			<string>;</string>
 			<key>end</key>
 			<string>$\n?</string>
@@ -94,8 +31,27 @@
 			<string>comment.line.ioke</string>
 		</dict>
 		<dict>
+			<key>begin</key>
+			<string>((?&lt;=fn\()|(?&lt;=fnx\()|(?&lt;=method\()|(?&lt;=macro\()|(?&lt;=lecro\()|(?&lt;=syntax\()|(?&lt;=dmacro\()|(?&lt;=dlecro\()|(?&lt;=dlecrox\()|(?&lt;=dsyntax\())[[:space]]*"</string>
+			<key>end</key>
+			<string>"</string>
+			<key>name</key>
+			<string>string.documentation.ioke</string>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
+				</dict>
+				<dict>
+					<key>include</key>
+					<string>#embedded_source</string>
+				</dict>
+			</array>
+		</dict>
+		<dict>
 			<key>match</key>
-			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[[:alnum:]!?_:]+?:\s</string>
+			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))[[:alnum:]!?_]+:\s</string>
 			<key>name</key>
 			<string>string.literal.keyword-argument.ioke</string>
 		</dict>
@@ -108,18 +64,6 @@
 		<dict>
 			<key>include</key>
 			<string>#assignments</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#function_names</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#prototype_names</string>
-		</dict>
-		<dict>
-			<key>include</key>
-			<string>#operator_names</string>
 		</dict>
 		<dict>
 			<key>include</key>
@@ -159,56 +103,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
+					<key>include</key>
+					<string>#embedded_source</string>
 				</dict>
 			</array>
 		</dict>
@@ -222,56 +122,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
+					<key>include</key>
+					<string>#embedded_source</string>
 				</dict>
 			</array>
 		</dict>
@@ -285,56 +141,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
+					<key>include</key>
+					<string>#embedded_source</string>
 				</dict>
 			</array>
 		</dict>
@@ -348,56 +160,12 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>(\\b|\\e|\\t|\\n|\\f\\r|\\"|\\\\|\\#|\\\Z|\\u[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7])</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
+					<key>include</key>
+					<string>#embedded_source</string>
 				</dict>
 			</array>
 		</dict>
@@ -411,64 +179,14 @@
 			<key>patterns</key>
 			<array>
 				<dict>
-					<key>match</key>
-					<string>\\.</string>
-					<key>name</key>
-					<string>constant.character.escape.ioke</string>
+					<key>include</key>
+					<string>#text_literal_escapes</string>
 				</dict>
 				<dict>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-						<key>1</key>
-						<dict>
-							<key>name</key>
-							<string>source.embedded.empty.ioke</string>
-						</dict>
-					</dict>
-					<key>match</key>
-					<string>#\{(\})</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-				</dict>
-				<dict>
-					<key>begin</key>
-					<string>#\{</string>
-					<key>captures</key>
-					<dict>
-						<key>0</key>
-						<dict>
-							<key>name</key>
-							<string>punctuation.section.embedded.ioke</string>
-						</dict>
-					</dict>
-					<key>end</key>
-					<string>\}</string>
-					<key>name</key>
-					<string>source.embedded.ioke</string>
-					<key>patterns</key>
-					<array>
-						<dict>
-							<key>include</key>
-							<string>#nest_curly_and_self</string>
-						</dict>
-						<dict>
-							<key>include</key>
-							<string>$self</string>
-						</dict>
-					</array>
+					<key>include</key>
+					<string>#embedded_source</string>
 				</dict>
 			</array>
-		</dict>
-		<dict>
-			<key>match</key>
-			<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(?![[:alnum:]!?_:])</string>
-			<key>name</key>
-			<string>keyword.cell-names.ioke</string>
 		</dict>
 		<dict>
 			<key>match</key>
@@ -477,12 +195,18 @@
 			<string>entity.standout-names.ioke</string>
 		</dict>
 		<dict>
+			<key>match</key>
+			<string>#{</string>
+			<key>name</key>
+			<string>punctuation.set-literal-start.ioke</string>
+		</dict>
+		<dict>
 			<key>include</key>
-			<string>#operator_symbols</string>
+			<string>#keywords</string>
 		</dict>
 		<dict>
 			<key>match</key>
-			<string>(\`\`|\`|''|'|\.|\,|@|@@)</string>
+			<string>(\`\`|\`|''|'|\.|\,|@|@@|\[|\]|\(|\))</string>
 			<key>name</key>
 			<string>punctuation.ioke</string>
 		</dict>
@@ -507,15 +231,103 @@
 				</dict>
 			</array>
 		</dict>
-		<key>function_names</key>
+		<key>embedded_source</key>
+		<dict>
+			<key>patterns</key>
+			<array>
+				<dict>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+						<key>1</key>
+						<dict>
+							<key>name</key>
+							<string>source.embedded.empty.ioke</string>
+						</dict>
+					</dict>
+					<key>match</key>
+					<string>#\{(\})</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+				</dict>
+				<dict>
+					<key>begin</key>
+					<string>#\{</string>
+					<key>captures</key>
+					<dict>
+						<key>0</key>
+						<dict>
+							<key>name</key>
+							<string>punctuation.section.embedded.ioke</string>
+						</dict>
+					</dict>
+					<key>end</key>
+					<string>\}</string>
+					<key>name</key>
+					<string>source.embedded.ioke</string>
+					<key>patterns</key>
+					<array>
+						<dict>
+							<key>include</key>
+							<string>#nest_curly_and_self</string>
+						</dict>
+						<dict>
+							<key>include</key>
+							<string>$self</string>
+						</dict>
+					</array>
+				</dict>
+			</array>
+		</dict>
+		<key>keywords</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>match</key>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(mimic|self|use|true|false|nil)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>keyword.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(return|break|continue|unless|true|false|nil)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>keyword.control.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>(&amp;&amp;&gt;&gt;|\|\|&gt;&gt;|\*\*&gt;&gt;|\.\.\.|===|\*\*&gt;|\*\*=|&amp;&amp;&gt;|&amp;&amp;=|\|\|&gt;|\|\|=|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&lt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|=&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|\@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\*\*|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$|!|~|\?|#)</string>
+					<key>name</key>
+					<string>keyword.operator.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(nand|and|nor|xor|or)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>keyword.operator.boolean.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>keyword.prototype-names.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
 					<string>((^)|(?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(fn|fnx|method|macro|lecro|syntax|dmacro|dlecro|dlecrox|dsyntax)(?![[:alnum:]!?_:])</string>
 					<key>name</key>
-					<string>entity.name.function.ioke</string>
+					<string>keyword.function.ioke</string>
+				</dict>
+				<dict>
+					<key>match</key>
+					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(print|println|cell\?|cell|keyword|documentation|if|unless|while|until|loop|for|for:set|for:dict|bind|rescue|handle|restart|asText|inspect|notice|do|call|list|dict|set|with|kind)(?![[:alnum:]!?_:])</string>
+					<key>name</key>
+					<string>keyword.cell-names.ioke</string>
 				</dict>
 			</array>
 		</dict>
@@ -578,39 +390,15 @@
 				</dict>
 			</array>
 		</dict>
-		<key>operator_names</key>
+		<key>text_literal_escapes</key>
 		<dict>
 			<key>patterns</key>
 			<array>
 				<dict>
 					<key>match</key>
-					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(return|break|continue|mimic|self|use|fn|fnx|method|macro|lecro|lecrox|syntax|dmacro|dlecro|dlecrox|dsyntax|unless|true|false|nil)(?![[:alnum:]!?_:])</string>
+					<string>(\\b|\\e|\\t|\\n|\\f|\\r|\\"|\\\\|\\#|\\\Z|\\u[[:xdigit:]][[:xdigit:]][[:xdigit:]][[:xdigit:]]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7],[[:space:]]+\\[0-3]?[0-7]?[0-7]|\\[0-3]?[0-7]?[0-7])</string>
 					<key>name</key>
-					<string>keyword.operator.names.ioke</string>
-				</dict>
-			</array>
-		</dict>
-		<key>operator_symbols</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>((?&lt;![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-])(nand|and|nor|xor|or|&amp;&amp;&gt;&gt;|\|\|&gt;&gt;|\*\*&gt;&gt;|\.\.\.|===|\*\*&gt;|&amp;&amp;&gt;|\|\|&gt;|\-&gt;&gt;|\+&gt;&gt;|!&gt;&gt;|&lt;&gt;&gt;&gt;|&lt;&gt;&gt;|&amp;&gt;&gt;|%&gt;&gt;|#&gt;&gt;|@&gt;&gt;|/&gt;&gt;|\*&gt;&gt;|\?&gt;&gt;|\|&gt;&gt;|\^&gt;&gt;|~&gt;&gt;|\$&gt;&gt;|=&gt;&gt;|&lt;&lt;=|&gt;&gt;=|&lt;=&gt;|&lt;\-&gt;|:::|::|=~|!~|=&gt;|\+\+|\-\-|&lt;=|&gt;=|==|!=|&amp;&amp;|\.\.|\+=|\-=|\*=|\/=|%=|&amp;=|\^=|\|=|&lt;\-|\+&gt;|!&gt;|&lt;&gt;|&amp;&gt;|%&gt;|#&gt;|\@&gt;|\/&gt;|\*&gt;|\?&gt;|\|&gt;|\^&gt;|~&gt;|\$&gt;|&lt;\-&gt;|\-&gt;|&lt;&lt;|&gt;&gt;|\*\*|\?\||\?&amp;|\|\||&gt;|&lt;|\*|\/|%|\+|\-|&amp;|\^|\||=|\$|!|~)(?![.=*&amp;|&gt;!&lt;%#@/\\+?$~^:-]))|(\+)</string>
-					<key>name</key>
-					<string>entity.operator.symbols.ioke</string>
-				</dict>
-			</array>
-		</dict>
-		<key>prototype_names</key>
-		<dict>
-			<key>patterns</key>
-			<array>
-				<dict>
-					<key>match</key>
-					<string>((?&lt;![[:alnum:]!?_:])|(?&lt;![[:alnum:]!?_:]!))(Base|Call|Condition|DateTime|DefaultBehavior|DefaultMacro|DefaultMethod|DefaultSyntax|Dict|FileSystem|Ground|Handler|IO|JavaMethod|LexicalBlock|LexicalMacro|List|Message|Method|Mixins|Number|Number Decimal|Number Integer|Number Rational|Number Real|Origin|Pair|Range|Regexp|Rescue|Restart|Runtime|Set|Symbol|System|Text)(?![[:alnum:]!?_:])</string>
-					<key>name</key>
-					<string>entity.prototype-names.ioke</string>
+					<string>constant.character.escape.ioke</string>
 				</dict>
 			</array>
 		</dict>
