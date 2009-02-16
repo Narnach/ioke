@@ -5,7 +5,10 @@ package ioke.lang;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.LinkedList;
 import java.util.HashSet;
@@ -39,6 +42,11 @@ public class JavaWrapper extends IokeData {
 
     public static JavaWrapper wrapWithMethods(Class<?> clz, IokeObject obj, Runtime runtime) {
         try {
+            String prefix = "";
+            if(clz == Class.class) {
+                prefix = "class:";
+            }
+
             Map<String, List<Method>> ms = new HashMap<String, List<Method>>();
             for(Method m : clz.getDeclaredMethods()) {
                 String name = m.getName();
@@ -56,16 +64,29 @@ public class JavaWrapper extends IokeData {
 //                 System.err.println("creating method: " + mesl.getKey() + " on: " + clz);
                 Object method = runtime.createJavaMethod(mesl.getValue().toArray(new Method[0]));
                 String key = mesl.getKey();
-                obj.setCell(key, method);
+                obj.setCell(prefix + key, method);
                 if(key.startsWith("get") && key.length() > 3) {
                     char first = Character.toLowerCase(key.charAt(3));
-                    obj.setCell(""+first+key.substring(4), method);
+                    obj.setCell(prefix+first+key.substring(4), method);
                 } else if(key.startsWith("set") && key.length() > 3) {
                     char first = Character.toLowerCase(key.charAt(3));
-                    obj.setCell(""+first+key.substring(4) + "=", method);
+                    obj.setCell(prefix+first+key.substring(4) + "=", method);
                 } else if(key.startsWith("is") && key.length() > 2) {
                     char first = Character.toLowerCase(key.charAt(2));
-                    obj.setCell(""+first+key.substring(3) + "?", method);
+                    obj.setCell(prefix+first+key.substring(3) + "?", method);
+                }
+            }
+
+            for(Field f : clz.getDeclaredFields()) {
+                try {
+                    f.setAccessible(true);
+                } catch(Exception e) {}
+
+                Object getter = runtime.createJavaFieldGetter(f);
+                obj.setCell("field:" + f.getName(), getter);
+
+                if(!Modifier.isFinal(f.getModifiers())) {
+                    obj.setCell("field:" + f.getName() + "=", runtime.createJavaFieldSetter(f));
                 }
             }
 
@@ -94,6 +115,92 @@ public class JavaWrapper extends IokeData {
                     } else {
                         return context.runtime.newText(on.getClass().getName().replaceAll("\\.", ":"));
                     }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns the true if the receiver is a class object, false otherwise.", new JavaMethod.WithNoArguments("class?") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof IokeObject) {
+                        return (((JavaWrapper)IokeObject.data(on)).clazz == Class.class) ? context.runtime._true : context.runtime._false;
+                    } else {
+                        return (on instanceof Class) ? context.runtime._true : context.runtime._false;
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("calls toString on the receiver and returns it.", new JavaMethod.WithNoArguments("class:toString") {
+                @Override
+                public Object activate(IokeObject method, Object on, List<Object> args, Map<String, Object> keywords, IokeObject context, IokeObject message) throws ControlFlow {
+                    if(on instanceof IokeObject) {
+                        return ((JavaWrapper)IokeObject.data(on)).object.toString();
+                    } else {
+                        return on.toString();
+                    }
+                }
+            }));
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is equal to the right hand side. this will use the Java equals method - after unwrapping both the left hand and right hand side.", new JavaMethod("==") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object left = on;
+                    Object right = args.get(0);
+                    if(left instanceof IokeObject && IokeObject.data(left) instanceof JavaWrapper) {
+                        left = getObject(left);
+                    }
+
+                    if(right instanceof IokeObject && IokeObject.data(right) instanceof JavaWrapper) {
+                        right = getObject(right);
+                    }
+
+                    if(left == null) {
+                        return right == null ? context.runtime._true : context.runtime._false;
+                    }
+                    return left.equals(right) ? context.runtime._true : context.runtime._false;
+                }
+            }));
+
+
+        obj.registerMethod(runtime.newJavaMethod("returns true if the left hand side is the same instance as the right hand side", new JavaMethod("same?") {
+                private final DefaultArgumentsDefinition ARGUMENTS = DefaultArgumentsDefinition
+                    .builder()
+                    .withRequiredPositional("other")
+                    .getArguments();
+
+                @Override
+                public DefaultArgumentsDefinition getArguments() {
+                    return ARGUMENTS;
+                }
+
+                @Override
+                public Object activate(IokeObject method, IokeObject context, IokeObject message, Object on) throws ControlFlow {
+                    List<Object> args = new ArrayList<Object>();
+                    getArguments().getEvaluatedArguments(context, message, on, args, new HashMap<String, Object>());
+
+                    Object left = on;
+                    Object right = args.get(0);
+                    if(left instanceof IokeObject && IokeObject.data(left) instanceof JavaWrapper) {
+                        left = getObject(left);
+                    }
+
+                    if(right instanceof IokeObject && IokeObject.data(right) instanceof JavaWrapper) {
+                        right = getObject(right);
+                    }
+
+                    return left == right ? context.runtime._true : context.runtime._false;
                 }
             }));
     }

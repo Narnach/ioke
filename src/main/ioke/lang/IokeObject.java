@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.IdentityHashMap;
+import java.util.regex.Pattern;
 
 import ioke.lang.exceptions.ControlFlow;
 
@@ -434,8 +435,22 @@ public class IokeObject implements TypeChecker {
         cells.put(name, runtime.nul);
     }
 
+    public String getKind(IokeObject message, IokeObject context) throws ControlFlow {
+        Object obj = findCell(null, null, "kind");
+        if(IokeObject.data(obj) instanceof Text) {
+            return ((Text)IokeObject.data(obj)).getText();
+        } else {
+            return ((Text)IokeObject.data(getOrActivate(obj, context, message, this))).getText();
+        }
+    }
+
     public String getKind() {
-        return ((Text)IokeObject.data(findCell(null, null, "kind"))).getText();
+        Object obj = findCell(null, null, "kind");
+        if(obj != null && IokeObject.data(obj) instanceof Text) {
+            return ((Text)IokeObject.data(obj)).getText();
+        } else {
+            return null;
+        }
     }
 
     public boolean hasKind() {
@@ -599,10 +614,11 @@ public class IokeObject implements TypeChecker {
         as(on, context).assign(name, value, context, message);
     }
 
+    public final static Pattern SLIGHTLY_BAD_CHARS = Pattern.compile("[!=\\.\\-\\+&|\\{\\[]");
     public void assign(String name, Object value, IokeObject context, IokeObject message) throws ControlFlow {
         checkFrozen("=", message, context);
 
-        if(!Symbol.BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
+        if(!SLIGHTLY_BAD_CHARS.matcher(name).find() && findCell(message, context, name + "=") != runtime.nul) {
             runtime.createMessage(new Message(runtime, name + "=", runtime.createMessage(Message.wrap(as(value, context))))).sendTo(context, this);
         } else {
             cells.put(name, value);

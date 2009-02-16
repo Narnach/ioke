@@ -218,14 +218,14 @@ describe("Text",
       "foo" trim should == "foo"
       "foo bar quux" trim should == "foo bar quux"
     )
-  
+
     it("should return a new string with leading and trailing whitespace removed",
       "foo  " trim should == "foo"
       "  foo" trim should == "foo"
       " foo " trim should == "foo"
       "  foo bar quux  " trim should == "foo bar quux"
     )
-  
+
     it("should return a new string with leading and trailing newlines removed",
       "foo\n" trim should == "foo"
       "\nfoo" trim should == "foo"
@@ -242,7 +242,15 @@ describe("Text",
       "foo" split("b") should == ["foo"]
     )
 
-    it("should return each segment splitted on a string",
+    it("should return each character separately if empty text is given",
+      "foo" split("") should == ["f", "o", "o"]
+    )
+    
+    it("should return each character separately if empty regexp is given",
+      "foo" split(#//) should == ["f", "o", "o"]
+    )
+
+    it("should return each segment splitted on a text",
       "foobquux" split("b") should == ["foo", "quux"]
       "foo/bar/quux" split("/") should == ["foo", "bar", "quux"]
     )
@@ -252,7 +260,7 @@ describe("Text",
     )
 
     it("should split on a regexp",
-      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl", ""]
+      "x oooo y o fofblooooooooooooo" split(#/o+/) should == ["x ", " y ", " f", "fbl"]
     )
 
     it("should validate type of receiver",
@@ -261,11 +269,11 @@ describe("Text",
   )
 
   describe("chars",
-    it("should return an empty list on an empty string",
+    it("should return an empty list on an empty text",
       "" chars should == []
     )
   
-    it("should return a list of three individual strings on a three-character string",
+    it("should return a list of three individual texts on a three-character text",
       "foo" chars should == ["f", "o", "o"]
     )
   
@@ -601,7 +609,7 @@ describe("Text",
     )
 
     it("should handle a % followed by a newline", 
-"foo%
+      "foo%
 " format should == "foo%\n"
     )
     
