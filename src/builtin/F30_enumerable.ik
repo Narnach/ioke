@@ -409,6 +409,16 @@ Mixins Enumerable only = method(
       result << n))
   result)
 
+Mixins Enumerable except = method(
+  "takes one argument. except will return a new list with only the elements not included in the one argument",
+  matchingAgainst,
+
+  result = list()
+  self each(n,
+    unless(matchingAgainst include?(n),
+      result << n))
+  result)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
