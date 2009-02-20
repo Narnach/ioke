@@ -422,4 +422,5 @@ Mixins Enumerable aliasMethod("inject", "fold")
 Mixins Enumerable aliasMethod("select", "findAll")
 Mixins Enumerable aliasMethod("select", "filter")
 Mixins Enumerable aliasMethod("include?", "member?")
+Mixins Enumerable aliasMethod("only", "intersect")
 

@@ -974,5 +974,12 @@ describe(Mixins,
         set(1,2,4) only([2,4,8]) should == [2,4]
       )
     )
+
+    describe("intersect",
+      it("should return a new list with only shared elements if one list argument is given",
+        [1,2,3] intersect([2,3,4]) should == [2,3]
+        set(1,2,4) intersect([2,4,8]) should == [2,4]
+      )
+    )
   )
 )
