@@ -400,24 +400,16 @@ Mixins Enumerable grep = dmacro(
   result)
 
 Mixins Enumerable only = method(
-  "takes one argument. only will return a new list with all elements included in both the collection and the argument",
+  "takes one argument. only selects all the elements included in the one argument",
   matchingAgainst,
 
-  result = list()
-  self each(n,
-    if(matchingAgainst include?(n),
-      result << n))
-  result)
+  self select(n, matchingAgainst include?(n)))
 
 Mixins Enumerable except = method(
-  "takes one argument. except will return a new list with only the elements not included in the one argument",
+  "takes one argument. except rejects all the elements included in the one argument",
   matchingAgainst,
 
-  result = list()
-  self each(n,
-    unless(matchingAgainst include?(n),
-      result << n))
-  result)
+  self reject(n, matchingAgainst include?(n)))
 
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
