@@ -989,5 +989,13 @@ describe(Mixins,
         set(1,2,4,8,16) except([2,4,8]) sort should == [1,16] sort
       )
     )
+
+    describe("exclude",
+      it("should return a new list with only items in the collection that are not included in the one argument",
+        [1,2,3,10] exclude([2,3,4]) should == [1,10]
+        ;; sort the results to compare the unordered results from iterating over the set
+        set(1,2,4,8,16) exclude([2,4,8]) sort should == [1,16] sort
+      )
+    )
   )
 )
