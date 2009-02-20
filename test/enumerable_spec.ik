@@ -967,5 +967,12 @@ describe(Mixins,
         ["abc","bfooo","cc"] min(x, x[1]) should == "abc"
       )
     )
+
+    describe("only",
+      it("should return a new list with only shared elements if one list argument is given",
+        [1,2,3] only([2,3,4]) should == [2,3]
+        set(1,2,4) only([2,4,8]) should == [2,4]
+      )
+    )
   )
 )

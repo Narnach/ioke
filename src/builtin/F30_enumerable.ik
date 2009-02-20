@@ -399,6 +399,16 @@ Mixins Enumerable grep = dmacro(
       result << lexicalCode call(cell(:n))))
   result)
 
+Mixins Enumerable only = method(
+  "takes one argument. only will return a new list with all elements included in both the collection and the argument",
+  matchingAgainst,
+
+  result = list()
+  self each(n,
+    if(matchingAgainst include?(n),
+      result << n))
+  result)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
