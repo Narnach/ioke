@@ -975,6 +975,13 @@ describe(Mixins,
       )
     )
 
+    describe("only:set",
+      it("should return a new set containing all elements shared with the provided argument",
+        [1,2,3] only:set([2,3,4]) should == #{2,3}
+        #{1,2,4} only:set(#{2,4,8}) should == #{2,4}
+      )
+    )
+
     describe("except",
       it("should return a new list containing all elements not included in the provided argument",
         [1,2,3,10] except([2,3,4]) should == [1,10]

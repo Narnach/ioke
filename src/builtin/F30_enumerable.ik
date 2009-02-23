@@ -405,6 +405,15 @@ Mixins Enumerable only = method(
 
   self select(n, matchingAgainst include?(n)))
 
+Mixins Enumerable only:set = method(
+  "takes one argument. returns a set. only selects all the elements included in the one argument",
+  matchingAgainst,
+
+  result = set()
+  self select(n, matchingAgainst include?(n)) each(n,
+    result << n)
+  result)
+
 Mixins Enumerable except = method(
   "takes one argument. except rejects all the elements included in the one argument",
   matchingAgainst,
