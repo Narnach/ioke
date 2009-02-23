@@ -989,5 +989,13 @@ describe(Mixins,
         set(1,2,4,8,16) except([2,4,8]) sort should == [1,16] sort
       )
     )
+
+    describe("except:set",
+      it("should return a new set containing all elements not included in the provided argument",
+        [1,2,3,10] except:set([2,3,4]) should == #{1,10}
+        #{1,2,4,8,16} except:set([2,4,8]) should == #{1,16}
+        #{1,2,4,8,16} except:set(#{2,4,8}) should == #{1,16}
+      )
+    )
   )
 )

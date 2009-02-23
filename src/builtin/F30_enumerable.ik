@@ -420,6 +420,15 @@ Mixins Enumerable except = method(
 
   self reject(n, matchingAgainst include?(n)))
 
+Mixins Enumerable except:set = method(
+  "takes one argument. returns a set. except rejects all the elements included in the one argument",
+  matchingAgainst,
+
+  result = set()
+  self reject(n, matchingAgainst include?(n)) each(n,
+    result << n)
+  result)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")
