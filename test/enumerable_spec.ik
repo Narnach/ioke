@@ -982,6 +982,13 @@ describe(Mixins,
       )
     )
 
+    describe("only:dict",
+      it("should return a new dict containing all elements that share a key with the provided argument",
+        {1 => 2, 3 => 4} only:dict([1,4]) should == {1 => 2}
+        {1 => 2, 3 => 4} only:dict(#{1,4}) should == {1 => 2}
+      )
+    )
+
     describe("except",
       it("should return a new list containing all elements not included in the provided argument",
         [1,2,3,10] except([2,3,4]) should == [1,10]
