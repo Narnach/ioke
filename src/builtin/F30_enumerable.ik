@@ -438,6 +438,15 @@ Mixins Enumerable except:set = method(
     result << n)
   result)
 
+Mixins Enumerable except:dict = method(
+  "takes one argument. returns a dict. except:dict rejects all the elements that share a key with the argument",
+  matchingAgainst,
+
+  result = {}
+  self keys reject(n, matchingAgainst include?(n)) each(n,
+    result[n] = self[n])
+  result)
+
 Mixins Enumerable aliasMethod("map", "collect")
 Mixins Enumerable aliasMethod("map", "collect:list")
 Mixins Enumerable aliasMethod("map", "map:list")

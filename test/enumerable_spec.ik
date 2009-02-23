@@ -1004,5 +1004,12 @@ describe(Mixins,
         #{1,2,4,8,16} except:set(#{2,4,8}) should == #{1,16}
       )
     )
+
+    describe("except:dict",
+      it("should return a new dict containing all elements that do not share a key with the provided argument",
+        {1 => 2, 3 => 4, 5 => 6} except:dict([2,3,4]) should == {1 => 2, 5 => 6}
+        {1 => 2, 3 => 4, 5 => 6} except:dict(#{2,3,4}) should == {1 => 2, 5 => 6}
+      )
+    )
   )
 )
