@@ -406,7 +406,7 @@ Mixins Enumerable only = method(
   self select(n, matchingAgainst include?(n)))
 
 Mixins Enumerable only:set = method(
-  "takes one argument. returns a set. only selects all the elements included in the one argument",
+  "takes one argument. returns a set. only:set selects all the elements included in the one argument",
   matchingAgainst,
 
   result = set()
@@ -415,7 +415,7 @@ Mixins Enumerable only:set = method(
   result)
 
 Mixins Enumerable only:dict = method(
-  "takes one argument. returns a dict. only selects all the elements that share a key with the one argument",
+  "takes one argument. returns a dict. only:dict selects all the elements that share a key with the one argument",
   matchingAgainst,
 
   result = {}
@@ -430,7 +430,7 @@ Mixins Enumerable except = method(
   self reject(n, matchingAgainst include?(n)))
 
 Mixins Enumerable except:set = method(
-  "takes one argument. returns a set. except rejects all the elements included in the one argument",
+  "takes one argument. returns a set. except:set rejects all the elements included in the one argument",
   matchingAgainst,
 
   result = set()
